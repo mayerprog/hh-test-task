@@ -104,3 +104,5 @@ readline.on('line', (line) => {
         readline.close();
     }
 });
+
+//Решение прошло проверку
