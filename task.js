@@ -6,15 +6,81 @@ let n
 let m
 let s
 
-let as = []
-let bs = []
+let firstPack = []
+let secondPack = []
+
+let resumesInfo = new Object();
+
+let maxResumes
+let amountResumes = 0
+
+let filteredSecondPack = []
 
 
-function f(as, bs) {
-    console.log(as)
-    console.log(bs)
+const sumResumes = (resumePack, acceptableAmount) => {
+    let sum = 0
+    let filteredPack = []
+    amountResumes = 0
+
+    for (let i = 0; i < resumePack.length; i++) {
+        sum += resumePack[i]
+        filteredPack.push(resumePack[i])
+        amountResumes++
+        if (sum > acceptableAmount) {
+            sum -= resumePack[i]
+            filteredPack.pop()
+            amountResumes--
+            break
+        }
+        if (sum === acceptableAmount) break
+    }
+    resumesInfo['interimSum'] = sum
+    resumesInfo['resumes'] = filteredPack
 }
 
+const filterSecondPack = (secondPack, acceptableAmount) => {
+    let sum = 0
+
+    for (let i = 0; i < secondPack.length; i++) {
+        sum += secondPack[i]
+        filteredSecondPack.push(secondPack[i])
+        if (sum > acceptableAmount) {
+            sum -= secondPack[i]
+            filteredSecondPack.pop()
+            break
+        }
+        if (sum === acceptableAmount) break
+    }
+
+    return filteredSecondPack
+}
+
+
+
+
+const f = (firstPack, secondPack, acceptableAmount) => {
+
+    sumResumes(firstPack, acceptableAmount)
+
+    maxResumes = amountResumes
+
+    filterSecondPack(secondPack, acceptableAmount)
+
+    for (let i = 0; i < filteredSecondPack.length; i++) {
+        resumesInfo.resumes.unshift(filteredSecondPack[i])
+        sumResumes(resumesInfo.resumes)
+
+        while (resumesInfo.interimSum > acceptableAmount) {
+            resumesInfo.resumes.pop()
+            sumResumes(resumesInfo.resumes)
+        }
+        if (resumesInfo.interimSum <= acceptableAmount && amountResumes > maxResumes) {
+            maxResumes = amountResumes
+        }
+    }
+    console.log(maxResumes)
+    return maxResumes
+}
 
 readline.on('line', (line) => {
     if (count == 0) {
@@ -25,16 +91,16 @@ readline.on('line', (line) => {
     }
     else {
         let [a, b] = line.split(' ')
-        if(count <= n )
-            as.push(parseInt(a))
-        if(count <= m )
-            bs.push(parseInt(b))
+        if (count <= n)
+            firstPack.push(parseInt(a))
+        if (count <= m)
+            secondPack.push(parseInt(b))
     }
-    
+
     count += 1
 
     if (count > n && count > m) {
-        f(as, bs)
+        f(firstPack, secondPack, s)
         readline.close();
-    }    
+    }
 });
