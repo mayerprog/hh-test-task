@@ -56,9 +56,7 @@ const filterSecondPack = (secondPack, acceptableAmount) => {
 }
 
 
-
-
-const f = (firstPack, secondPack, acceptableAmount) => {
+const findMaxResumes = (firstPack, secondPack, acceptableAmount) => {
 
     sumResumes(firstPack, acceptableAmount)
 
@@ -100,7 +98,7 @@ readline.on('line', (line) => {
     count += 1
 
     if (count > n && count > m) {
-        f(firstPack, secondPack, s)
+        findMaxResumes(firstPack, secondPack, s)
         readline.close();
     }
 });
