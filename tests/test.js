@@ -1,30 +1,75 @@
-//задача посчитать количество шагов, если сумма элементов массива даст 10
-//или пока не выйдет за пределы 10
+let firstPack = []
+let secondPack = []
 
-let resumesInfo = new Map();
-let sum = 0
+let resumesInfo = new Object();
+
+let maxResumes
 let amountResumes = 0
-let newPack = []
 
-const packInSequence = (resumePack, acceptableAmount) => {
+let filteredSecondPack = []
 
-        for (let i = 0; i < resumePack.length; i++) {
-            sum += resumePack[i]
-            newPack.push(resumePack[i])
-            amountResumes++
-            if (sum > acceptableAmount) {
-                sum -= resumePack[i]
-                newPack.pop()
-                amountResumes--
-                break
-            }
-            if (sum === acceptableAmount) break
+
+const sumResumes = (resumePack, acceptableAmount) => {
+    let sum = 0
+    let filteredPack = []
+    amountResumes = 0
+
+    for (let i = 0; i < resumePack.length; i++) {
+        sum += resumePack[i]
+        filteredPack.push(resumePack[i])
+        amountResumes++
+        if (sum > acceptableAmount) {
+            sum -= resumePack[i]
+            filteredPack.pop()
+            amountResumes--
+            break
         }
-        resumesInfo.set('amountResumes', amountResumes)
-        resumesInfo.set('interimSum', sum)
-        resumesInfo.set('resumes', newPack)
-
-        return resumesInfo
+        if (sum === acceptableAmount) break
+    }
+    resumesInfo['interimSum'] = sum
+    resumesInfo['resumes'] = filteredPack
 }
 
-console.log(packInSequence([ 1, 2, 3, 4 ], 11))
+const filterSecondPack = (secondPack, acceptableAmount) => {
+    let sum = 0
+
+    for (let i = 0; i < secondPack.length; i++) {
+        sum += secondPack[i]
+        filteredSecondPack.push(secondPack[i])
+        if (sum > acceptableAmount) {
+            sum -= secondPack[i]
+            filteredSecondPack.pop()
+            break
+        }
+        if (sum === acceptableAmount) break
+    }
+
+    return filteredSecondPack
+}
+
+
+const findMaxResumes = (firstPack, secondPack, acceptableAmount) => {
+
+    sumResumes(firstPack, acceptableAmount)
+    maxResumes = amountResumes
+
+    filterSecondPack(secondPack, acceptableAmount)
+
+    for (let i = 0; i < filteredSecondPack.length; i++) {
+        resumesInfo.resumes.unshift(filteredSecondPack[i])
+        sumResumes(resumesInfo.resumes)
+
+        while (resumesInfo.interimSum > acceptableAmount) {
+            resumesInfo.resumes.pop()
+            sumResumes(resumesInfo.resumes)
+        }
+        if (resumesInfo.interimSum <= acceptableAmount && amountResumes > maxResumes) {
+            maxResumes = amountResumes
+        }
+    }
+    console.log(maxResumes)
+    return maxResumes
+}
+
+
+findMaxResumes([ 4, 2, 4, 6, 1, 7 ], [ 2, 1, 8, 5 ], 10)
