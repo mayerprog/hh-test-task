@@ -12,9 +12,7 @@ let secondPack = []
 let resumesInfo = new Object();
 
 let maxResumes
-let amountResumes = 0
-
-let filteredSecondPack = []
+let amountResumes
 
 
 const sumResumes = (resumePack, acceptableAmount) => {
@@ -38,7 +36,7 @@ const sumResumes = (resumePack, acceptableAmount) => {
     resumesInfo['resumes'] = filteredPack
 }
 
-const filterSecondPack = (secondPack, acceptableAmount) => {
+const filterSecondPack = (secondPack, acceptableAmount, filteredSecondPack) => {
     let sum = 0
 
     for (let i = 0; i < secondPack.length; i++) {
@@ -58,11 +56,13 @@ const filterSecondPack = (secondPack, acceptableAmount) => {
 
 const findMaxResumes = (firstPack, secondPack, acceptableAmount) => {
 
+    let filteredSecondPack = []
+
     sumResumes(firstPack, acceptableAmount)
 
     maxResumes = amountResumes
 
-    filterSecondPack(secondPack, acceptableAmount)
+    filterSecondPack(secondPack, acceptableAmount, filteredSecondPack)
 
     for (let i = 0; i < filteredSecondPack.length; i++) {
         resumesInfo.resumes.unshift(filteredSecondPack[i])
