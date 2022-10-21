@@ -24,18 +24,32 @@ const DFS = (M, i, j, ROW, COL, regionsData) => {
 
 
 const findSquare = (regionsSquareData) => {
+    let maxArr
+    let square
+    let allOnes
+    let profitRatio
     let unfilteredObj = Object.fromEntries(regionsSquareData.entries())
     let filteredList = Object.values(unfilteredObj).map(element => element.filter((el) => el.length > 0))
-    let dataObj = []
+    // let dataObj = []
+    let interimRatio = 0
+    let result
+
     for (let e = 0; e < filteredList.length; e++) {
-        let maxArr = Math.max(...filteredList[e].map(a=>a.length))
-        let square = maxArr * filteredList[e].length
-        let allOnes = filteredList[e].flat().reduce((a, b) => a+b)
-        let profitRatio = allOnes / square 
-        dataObj.push([profitRatio, square])  
+        maxArr = Math.max(...filteredList[e].map(a=>a.length))
+        square = maxArr * filteredList[e].length
+        allOnes = filteredList[e].flat().reduce((a, b) => a+b)
+        profitRatio = allOnes / square 
+        if (profitRatio > interimRatio) {
+            interimRatio = profitRatio
+            result = square
+        }
+        if (profitRatio === interimRatio && square > result) {
+            result = square
+        }
+
+        // dataObj.push([profitRatio, square])  
     }
-    
-    return dataObj
+    return result
 }
 
 const findRegion = (M) => {
@@ -56,22 +70,23 @@ const findRegion = (M) => {
             }
         }
     }
-    console.log(findSquare(regionsSquareData))
+    findSquare(regionsSquareData)
 }
 
-let M = [[1, 1, 0, 0, 0],
-         [0, 1, 0, 0, 1],
-         [1, 0, 0, 1, 1],
-         [0, 0, 0, 0, 0],
-         [1, 1, 0, 0, 1]];
+// let M = [[1, 1, 0, 0, 0],
+//          [0, 1, 0, 0, 1],
+//          [1, 0, 0, 1, 1],
+//          [0, 0, 0, 0, 0],
+//          [1, 1, 0, 0, 1]];
 
-// let M = [[1, 1, 0],
-//         [1, 0, 0],
-//         [1, 0, 1]]
+let M = [[1, 1, 0],
+        [1, 0, 0],
+        [1, 0, 1]]
 
 // let M = [
 //     [1, 1, 1, 1, 1],
 //     [1, 0, 0, 0, 1],
 //     [1, 0, 1, 0, 1]
 // ]
+
 console.log(findRegion(M))
