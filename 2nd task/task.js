@@ -30,10 +30,10 @@ const DFS = (M, i, j, ROW, COL, regionsData) => {
 
 
 const findSquare = (regionsSquareData, M) => {
-    let Arr_i
+    let arr_i
     let minArr_i
     let maxArr_i
-    let Arr_j
+    let arr_j
     let minArr_j 
     let maxArr_j
     let onesSum
@@ -43,12 +43,12 @@ const findSquare = (regionsSquareData, M) => {
     let result = 0
 
     for (let e = 0; e < regionsSquareData.length; e++) {
-        Arr_i = regionsSquareData[e].map(n => n[0])
-        Arr_j = regionsSquareData[e].map(n => n[1])
-        maxArr_i = Math.max(...Arr_i)
-        minArr_i = Math.min(...Arr_i)
-        maxArr_j = Math.max(...Arr_j)
-        minArr_j = Math.min(...Arr_j)
+        arr_i = regionsSquareData[e].map(n => n[0])
+        arr_j = regionsSquareData[e].map(n => n[1])
+        maxArr_i = Math.max(...arr_i)
+        minArr_i = Math.min(...arr_i)
+        maxArr_j = Math.max(...arr_j)
+        minArr_j = Math.min(...arr_j)
 
         square = (maxArr_i - minArr_i + 1) * (maxArr_j - minArr_j + 1)
 
@@ -71,8 +71,8 @@ const findSquare = (regionsSquareData, M) => {
         if (profitRatio === interimRatio && square > result) {
             result = square
         }
-    Arr_i = 0
-    Arr_j = 0
+    arr_i = 0
+    arr_j = 0
     }
 
     return result
@@ -121,4 +121,4 @@ readline.on('line', (line) => {
     }
 });
 
-//
+//РЕШЕНИЕ ПРОШЛО ПРОВЕРКУ
